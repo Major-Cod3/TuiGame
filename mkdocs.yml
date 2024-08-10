@@ -1,0 +1,10 @@
+site_name: GameTui
+
+theme:
+  name: material
+  language: pt-BR
+  logo: assets/logo.png
+  favicon: assets/logo.png
+  palette:
+    scheme: slate
+    primary: blue grey
