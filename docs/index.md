@@ -1,7 +1,7 @@
 ## Descrição do Projeto
 
 O TuiGame é uma biblioteca Python para criar jogos interativos em um ambiente de terminal. O projeto oferece uma estrutura para a criação de tabuleiros personalizados, permitindo aos desenvolvedores adicionar elementos visuais, como títulos e cores, e interagir com os jogadores através da captura de teclas.
-
+- [Novo Arquivo](novo_arquivo.md)
 ### Instalação
 
 Para utilizar o TuiGame, é necessário ter o Python instalado. Além disso, as bibliotecas blessed e pyfiglet devem ser instaladas. Utilize os seguintes comandos para instalar as bibliotecas:
