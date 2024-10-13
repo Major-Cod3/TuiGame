@@ -7,8 +7,8 @@ theme:
     repo: fontawesome/brands/github
   name: material
   language: pt-BR
-  logo: assets/logo1.png
-  favicon: assets/logo1.png
+  logo: assets/logo.png
+  favicon: assets/logo.png
   font:
     code: Roboto Mono
   palette:
