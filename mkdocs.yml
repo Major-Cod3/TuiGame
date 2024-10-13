@@ -19,4 +19,4 @@ theme:
 markdown_extensions:
   - attr_list
 extra_css:
-  - stylesheets/extra.css
+  
