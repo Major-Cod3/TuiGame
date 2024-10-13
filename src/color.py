@@ -82,7 +82,7 @@ colors_ansi = {
     "Maroon": "52"
 }
 
-class setComponentColor():
+class TextColor():
 
     def __init__(self, color):
         self.cor = ''
