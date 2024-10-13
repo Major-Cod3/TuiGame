@@ -36,7 +36,7 @@ Os objetos são elementos que podem ser adicionados, movidos e deletados no tabu
 
 Classes e Funções Principais
 
-###Classe title
+### Classe title
 
 - A classe title é responsável por gerar um título estilizado para o jogo.
 
