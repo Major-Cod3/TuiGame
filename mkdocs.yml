@@ -1,10 +1,22 @@
-site_name: GameTui
+site_name: TuiGame
+repo_url: https://github.com/Major-Cod3/TuiGame
+repo_name: Major-Cod3/TuiGame
 
 theme:
+  icon:
+    repo: fontawesome/brands/github
   name: material
   language: pt-BR
-  logo: assets/logo.png
-  favicon: assets/logo.png
+  logo: assets/logo1.png
+  favicon: assets/logo1.png
+  font:
+    code: Roboto Mono
   palette:
     scheme: slate
     primary: blue grey
+    accent: red
+ 
+markdown_extensions:
+  - attr_list
+extra_css:
+  - stylesheets/extra.css

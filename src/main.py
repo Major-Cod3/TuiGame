@@ -1,71 +1,77 @@
-import os
 import sys
-from utils import color
-import themes
+import os
 import time
-import json
-import json_style
-json_string = '''
-{
-  "tui": {
-    "tema": "THEME_RED",
-    "titler": "Major"
-  },
-  "tui2": {
-    "tema": "THEME_LIGHT_2",
-    "titler": "Major"
-  },
-  "tui3": {
-    "tema": "THEME_PURPLE",
-    "titler": "Major"
-  }
-}
-'''
+from blessed import Terminal
+import pyfiglet
 
-# Converte a string JSON para um dicionário
-dados = json.loads(json_string)
+class title:
+	def __init__(self,title,font='big_money-se',justify='center'):
+		texto = pyfiglet.figlet_format(title,font=font,justify=justify)
+		print(texto)
+	def font_r(self):
+		fonte_Recommended=['3d-ascii','banner3-D','banner3','banner4','ansi_shadow','isometric2', 'isometric3', 'isometric4','pyramid','diet_cola','clr7x10','chiseled']
+		return fonte_Recommended
 
 class TUI:
-    def __init__(self,altura, largura,x, y):
+    def __init__(self,altura, largura,x=0,y=0):
+    	self.x,self.y = x,y
+    	self.objects = {}
+    	self.buffer = ""
+    	self.term = Terminal()
     	self.altura, self.largura = altura, largura
-    	self.x = x
-    	self.y = 1 if y==0 else y
-    	self.themes = themes.THEME_DARK_1
-    	self.tabuleiro = [[self.themes + ' ' + themes.RESET for _ in range(self.largura)] for _ in range(self.altura)]
-    def tema(self,nome_tema):
-    	self.themes = getattr(themes, nome_tema, None)
-    	if self.themes is None:
-    		raise ValueError(f"O tema '{nome_tema}' não foi encontrado.")
+    	self.tabuleiro_reset()
+    def tabuleiro_reset(self):
+    	self.tabuleiro = [['\033[48;5;24m \033[0m' for _ in range(self.largura)] for _ in range(self.altura)]
+    
+    def add_object(self,x,y,object,id):
+    	if 0 <= y < len(self.tabuleiro) and 0 <= x < len(self.tabuleiro[1]):
+    		self.objects[str(id)] = (y,x,object)
+    			
     	else:
-    		self.tabuleiro = [[self.themes + ' ' + themes.RESET for _ in range(self.largura)] for _ in range(self.altura)]
-    def titler(self, titulo):
-        # Calcular a posição central para o título
-        centro = (self.largura - len(titulo)) // 2
-        if centro < 0:
-            centro = 0
-        # Garantir que o título se encaixe no tabuleiro
-        if centro + len(titulo) > self.largura:
-            titulo = titulo[:self.largura - centro]
-        # Colocar o título na primeira linha do tabuleiro
-        linha = [' '] * self.largura  # Linha em branco
-        for i, t in enumerate(titulo):
-            linha[centro + i] ='\033[1m' + t +'\033[0m'
-        self.tabuleiro[0] = linha
+    		raise IndexError("Erro: A posição ultrapassou o tamanho do tabuleiro.")
+    #Função para deleta objetos
+    def delete_object(self, id):
+        if id in self.objects:
+            del self.objects[id]
+        else:
+            raise KeyError("Erro: Objeto não encontrado.")
+    def move_object(self, id, new_x, new_y):
+    	if id in self.objects:
+    		old_y, old_x, _ = self.objects[id]
+    		self.tabuleiro[old_y][old_x] = '\033[48;5;24m \033[0m'
+    		if 0 <= new_y < len(self.tabuleiro) and 0 <= new_x < len(self.tabuleiro[1]):
+    		      	_, _, object = self.objects[id]
+    		      	self.objects[id] = (new_y, new_x, object)
+    		      	self.tabuleiro[new_y][new_x] = object
+    		      	
+    		else:
+    			raise IndexError("Erro: A posição ultrapassou o tamanho do tabuleiro.")
+    	else:
+    		raise KeyError("Erro: Objeto não encontrado.")
+    #Função que atualiza no terminal
     def update(self):
+        self.buffer = ""  # Limpa o buffer antes de cada atualização
+        for chave in self.objects.keys():
+            self.tabuleiro[self.objects[chave][0]][self.objects[chave][1]] = self.objects[chave][2]
+
         for linha_index, linha in enumerate(self.tabuleiro):
-            sys.stdout.write(f'\033[{self.y + linha_index};{self.x}H')  # Move o cursor para a posição da linha atual
-            sys.stdout.write(''.join(linha))
-            sys.stdout.write('\n')
+            self.buffer += self.term.move_xy(self.x, self.y + linha_index) + ''.join(linha) + '\n'
+        sys.stdout.write(self.buffer)
         sys.stdout.flush()
-    	
+        
 
 # Exemplo de uso
 if __name__ == "__main__":
-        tui = TUI(30,83,x=0,y=0)
-        tui2 = TUI(30,83,x=0,y=30)
-        tui3 = TUI(30,83,x=0,y=60)
-        for style in json_style.style(dados):
-        	eval(style)
-        tui.update()
-        tui2.update()
-        tui3.update()
+        tui = TUI(20,20,x=30,y=16)
+        y = 0
+        tui.add_object(1,y,'o',id='o')
+        title('teste',font='isometric2')
+        time.sleep(0.5)
+        while True:
+        	tui.move_object('o',5,y)
+        	tui.update()
+        	if y ==19:
+        		y=0
+        	y = y +1
+        	time.sleep(1/15)
+
