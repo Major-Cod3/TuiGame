@@ -1,4 +1,4 @@
-from main import TUI,title
+from TUI import Tabuleiro,Title
 import time
 import random
 import event
@@ -48,7 +48,7 @@ def move():
     if not grow:
         
         
-        tui.tabuleiro_reset()
+        Tabuleiro.tabuleiro_reset()
         snake_body.pop(0)
         
 
@@ -62,14 +62,14 @@ def gerar_posicao_aleatoria():
 # Inicializando posição da comida
 posicao_comida = gerar_posicao_aleatoria()
 print("\033[?25l", end="")
-tui = TUI(30, 30, 20, 12)
+Tabuleiro = Tabuleiro(30, 30, 20, 0)
 # Adicionando a comida ao tabuleiro
-tui.add_object(posicao_comida[0], posicao_comida[1], '•', id='comida')
-title('Snake',font='isometric2')
+Tabuleiro.add_object(posicao_comida[0], posicao_comida[1], '•', id='comida')
+Title('Snake',font='isometric2')
 grow = False  # Indica se a cobrinha deve crescer
 
 while True:
-    tui.tabuleiro_reset()
+    Tabuleiro.tabuleiro_reset()
     # Obtendo a tecla pressionada
     key = event.get_pressed_key()
     if key in ['2', '8', '4', '6']:
@@ -80,20 +80,20 @@ while True:
     if snake_body[-1] == posicao_comida:
         grow = True  # A cobrinha deve crescer no próximo movimento
         posicao_comida = gerar_posicao_aleatoria()
-        tui.add_object(posicao_comida[0], posicao_comida[1], '•', id='comida')
+        Tabuleiro.add_object(posicao_comida[0], posicao_comida[1], '•', id='comida')
     else:
         grow = False
     # Atualizando as posições da cobrinha na tela
     for i, (x, y) in enumerate(snake_body):
         if i== len(snake_body) -1:
-        	tui.add_object(x, y, '\033[38;5;1m\033[48;5;1m#\033[0m', id=f'snake_part_{i}')
+        	Tabuleiro.add_object(x, y, f'\033[38;5;1m\033[48;5;1m#\033[0m', id=f'snake_part_{i}')
         else:
-        	tui.add_object(x, y, '\033[38;5;10m\033[48;5;10m#\033[0m', id=f'snake_part_{i}')
+        	Tabuleiro.add_object(x, y, f'\033[38;5;10m\033[48;5;10m#\033[0m', id=f'snake_part_{i}')
     # Checando se a cobrinha comeu a comida
     
 
     # Atualizando a tela
-    tui.update()
+    Tabuleiro.update()
 
     # Pausa para desacelerar o movimento
     time.sleep(1 /10)

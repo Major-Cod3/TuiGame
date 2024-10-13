@@ -4,15 +4,27 @@ import time
 from blessed import Terminal
 import pyfiglet
 
-class title:
+class TUI:
+	"""
+    Classe base para a interface do usuário em modo texto.
+    """
+	def update(self):
+		""" Método para atualizar a interface. Deve ser implementado nas subclasses."""
+		pass
+class Title(TUI):
 	def __init__(self,title,font='big_money-se',justify='center'):
 		texto = pyfiglet.figlet_format(title,font=font,justify=justify)
 		print(texto)
 	def font_r(self):
 		fonte_Recommended=['3d-ascii','banner3-D','banner3','banner4','ansi_shadow','isometric2', 'isometric3', 'isometric4','pyramid','diet_cola','clr7x10','chiseled']
 		return fonte_Recommended
+class Text(TUI):
+	def __init__(self,x,y,text):
+	   	self.term = Terminal()
+	   	sys.stdout.write(self.term.move_xy(x, y) + text)
+	   	sys.stdout.flush()
 
-class TUI:
+class Tabuleiro(TUI):
     def __init__(self,altura, largura,x=0,y=0):
     	self.x,self.y = x,y
     	self.objects = {}
@@ -23,9 +35,6 @@ class TUI:
     def tabuleiro_reset(self):
     	self.tabuleiro = [['\033[48;5;24m \033[0m' for _ in range(self.largura)] for _ in range(self.altura)]
     
-    def text_object(self,x,y,text):
-    	sys.stdout.write(self.term.move_xy(x, y) + text)
-    	sys.stdout.flush()
     def add_object(self,x,y,object,id):
     	if 0 <= y < len(self.tabuleiro) and 0 <= x < len(self.tabuleiro[1]):
     		self.objects[str(id)] = (y,x,object)
@@ -65,10 +74,10 @@ class TUI:
 
 # Exemplo de uso
 if __name__ == "__main__":
-        tui = TUI(20,20,x=30,y=0)
+        tui = Tabuleiro(20,20,x=30,y=0)
         y = 0
         tui.add_object(1,y,'o',id='o')
-        title('teste',font='isometric2')
+        Title('teste',font='isometric2')
         time.sleep(0.5)
         while True:
         	tui.move_object('o',5,y)
