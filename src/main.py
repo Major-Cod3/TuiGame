@@ -23,6 +23,9 @@ class TUI:
     def tabuleiro_reset(self):
     	self.tabuleiro = [['\033[48;5;24m \033[0m' for _ in range(self.largura)] for _ in range(self.altura)]
     
+    def text_object(self,x,y,text):
+    	sys.stdout.write(self.term.move_xy(x, y) + text)
+    	sys.stdout.flush()
     def add_object(self,x,y,object,id):
     	if 0 <= y < len(self.tabuleiro) and 0 <= x < len(self.tabuleiro[1]):
     		self.objects[str(id)] = (y,x,object)
@@ -62,7 +65,7 @@ class TUI:
 
 # Exemplo de uso
 if __name__ == "__main__":
-        tui = TUI(20,20,x=30,y=16)
+        tui = TUI(20,20,x=30,y=0)
         y = 0
         tui.add_object(1,y,'o',id='o')
         title('teste',font='isometric2')
