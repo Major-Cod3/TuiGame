@@ -1,5 +1,5 @@
 # TuiGame
-
+![logo](docs/assets/logo.png)
 O pacote **TuiGame** (Terminal User Interface Game) fornece uma estrutura para a criação de jogos simples em um ambiente de terminal. Ele permite a manipulação de objetos em um tabuleiro, com suporte para cores e captura de eventos do teclado, facilitando a implementação de mini jogos.
 
 [Documentação Completa](https://tuigame.readthedocs.io/en/latest/)
